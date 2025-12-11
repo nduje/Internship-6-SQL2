@@ -1,0 +1,60 @@
+CREATE TABLE Tournaments {
+	TournamentId SERIAL PRIMARY KEY,
+	Name VARCHAR(60) NOT NULL,
+	Year SMALLINT NOT NULL,
+	Location VARCHAR(100) NOT NULL,
+	WinnerTeamId INT NOT NULL
+};
+
+CREATE TABLE Teams {
+	TeamId SERIAL PRIMARY KEY,
+	Name VARCHAR(60) NOT NULL,
+	Country VARCHAR(60) NOT NULL,
+	Contact VARCHAR(60) NOT NULL,
+	CaptainId INT
+};
+
+CREATE TABLE Players {
+	PlayerId SERIAL PRIMARY KEY,
+	FirstName VARCHAR(60) NOT NULL,
+	LastName VARCHAR(60) NOT NULL,
+	DateOfBirth DATE NOT NULL,
+	JerseyNumber SMALLINT NOT NULL,
+	TeamId INT NOT NULL
+};
+
+CREATE TABLE Standings {
+	StandingId SERIAL PRIMARY KEY,
+	TournamentId INT NOT NULL,
+	TeamId INT NOT NULL,
+	Points SMALLINT NOT NULL
+};
+
+CREATE TABLE Referees {
+	RefereeId SERIAL PRIMARY KEY,
+	FirstName VARCHAR(60) NOT NULL,
+	LastName VARCHAR(60) NOT NULL,
+	DateOfBirth DATE NOT NULL,
+	Nationality VARCHAR(60) NOT NULL
+};
+
+CREATE TABLE Matches {
+	MatchId SERIAL PRIMARY KEY,
+	TournamentId INT NOT NULL,
+	Team1Id INT NOT NULL,
+	Team2Id INT NOT NULL,
+	MatchDate DATE NOT NULL,
+	MatchTime TIME NOT NULL,
+	Stage Stages NOT NULL,
+	Team1Score SMALLINT NOT NULL,
+	Team2Score SMALLINT NOT NULL,
+	RefereeId INT NOT NULL
+};
+
+CREATE TABLE Events {
+	EventId SERIAL PRIMARY KEY,
+	MatchId INT NOT NULL,
+	PlayerId INT NOT NULL,
+	Type EventType NOT NULL,
+	Minute SMALLINT NOT NULL
+};
