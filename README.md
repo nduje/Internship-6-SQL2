@@ -29,10 +29,11 @@ The project contains an ERD diagram that visually displays all database entities
    1. seed tournaments
    2. seed teams
    3. seed players
-   4. seed referees
-   5. seed standings
-   6. seed match_types
-   7. seed matches
-   8. seed events
+   4. seed captains
+   5. seed referees
+   6. seed standings
+   7. seed match_types
+   8. seed matches
+   9. seed events
 8. fixes
 9. queries
