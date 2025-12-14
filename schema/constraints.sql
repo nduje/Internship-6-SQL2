@@ -18,6 +18,10 @@ ALTER TABLE Standings
 ADD CONSTRAINT FK_Standing_Team
 FOREIGN KEY (TeamId) REFERENCES Teams(TeamId);
 
+ALTER TABLE Standings
+ADD CONSTRAINT UQ_Standing
+UNIQUE (TournamentId, TeamId);
+
 ALTER TABLE Matches
 ADD CONSTRAINT FK_Match_Team1_In_Tournament
 FOREIGN KEY (TournamentId, Team1Id)
@@ -43,10 +47,6 @@ FOREIGN KEY (MatchId) REFERENCES Matches(MatchId);
 ALTER TABLE Events
 ADD CONSTRAINT FK_Event_Player
 FOREIGN KEY (PlayerId) REFERENCES Players(PlayerId);
-
-ALTER TABLE Standings
-ADD CONSTRAINT UQ_Standing
-UNIQUE (TournamentId, TeamId);
 
 ALTER TABLE Matches
 ADD CONSTRAINT Different_Teams

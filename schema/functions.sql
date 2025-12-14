@@ -39,7 +39,7 @@ DECLARE
     Team1Points INT := 0;
     Team2Points INT := 0;
 	Team1GoalDifference INT;
-	Team2GoalDifference
+	Team2GoalDifference INT;
 BEGIN
     IF NEW.Team1Score > NEW.Team2Score THEN
         Team1Points := 3;
@@ -106,7 +106,7 @@ BEGIN
     FROM Players
     WHERE PlayerId = NEW.CaptainId;
 
-    IF CaptainTeam IS NULL OR CaptainTeam != NEW.TeamId THEN
+    IF CaptainTeam != NEW.TeamId THEN
         RAISE EXCEPTION 'Captain must belong to the same team!';
     END IF;
 
