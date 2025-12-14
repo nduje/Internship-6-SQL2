@@ -1,9 +1,11 @@
 -- 1. Prikaži popis svih turnira
+EXPLAIN ANALYZE
 SELECT t.Name, t.Year, t.Location, tm.Name AS Winner
 FROM Tournaments t
 LEFT JOIN Teams tm ON tm.TeamId = t.WinnerTeamId;
 
 -- 2. Prikaži sve timove koji sudjeluju na određenom turniru
+EXPLAIN ANALYZE
 SELECT te.Name, (p.FirstName || ' ' || p.LastName) AS Captain
 FROM Standings s
 JOIN Teams te ON te.TeamId = s.TeamId
@@ -11,11 +13,13 @@ LEFT JOIN Players p ON p.PlayerId = te.CaptainId
 WHERE s.TournamentId = 1;
 
 -- 3. Prikaži sve igrače iz određenog tima
+EXPLAIN ANALYZE
 SELECT (FirstName || ' ' || LastName) AS Name, DateOfBirth, JerseyNumber
 FROM Players
 WHERE TeamId = 1;
 
 -- 4. Prikaži sve utakmice određenog turnira
+EXPLAIN ANALYZE
 SELECT m.MatchDate, m.MatchTime,
        t1.Name AS Team1, t2.Name AS Team2,
        mt.MatchType AS Phase,
@@ -28,6 +32,7 @@ WHERE m.TournamentId = 1
 ORDER BY m.MatchDate;
 
 -- 5. Prikaži sve utakmice određenog tima kroz sve turnire
+EXPLAIN ANALYZE
 SELECT
     m.MatchDate,
 	m.MatchTime,
@@ -45,6 +50,7 @@ WHERE 1 IN (m.Team1Id, m.Team2Id)
 ORDER BY m.MatchDate;
 
 -- 6. Izlistati sve događaje (golovi, kartoni) za određenu utakmicu
+EXPLAIN ANALYZE
 SELECT e.Type, e.Minute, (p.FirstName || ' ' || p.LastName) AS Name
 FROM Events e
 JOIN Players p ON p.PlayerId = e.PlayerId
@@ -52,6 +58,7 @@ WHERE e.MatchId = 1
 ORDER BY Minute;
 
 -- 7. Prikaži sve igrače koji su dobili žuti ili crveni karton na cijelom turniru
+EXPLAIN ANALYZE
 SELECT
     (p.FirstName || ' ' || p.LastName) AS Name,
     te.Name AS Team,
@@ -66,6 +73,7 @@ GROUP BY p.PlayerId, p.FirstName, p.LastName, te.TeamId, te.Name
 ORDER BY Cards DESC;
 
 -- 8. Prikaži sve strijelce turnira
+EXPLAIN ANALYZE
 SELECT (p.FirstName || ' ' || p.LastName) AS Name,  te.Name AS Team, COUNT(*) AS Goals
 FROM Events e
 JOIN Players p ON p.PlayerId = e.PlayerId
@@ -77,6 +85,7 @@ GROUP BY p.PlayerId, te.Name
 ORDER BY Goals DESC;
 
 -- 9. Prikaži tablicu bodova za određeni turnir
+EXPLAIN ANALYZE
 SELECT te.Name, s.Points, s.GoalDifference
 FROM Standings s
 JOIN Teams te ON te.TeamId = s.TeamId
@@ -85,6 +94,7 @@ ORDER BY s.Points DESC;
 
 
 -- 10. Prikaži sve finalne utakmice u povijesti
+EXPLAIN ANALYZE
 SELECT m.MatchDate, m.MatchTime, t1.Name AS Team1, t2.Name AS Team2, (m.Team1Score || ':' || m.Team2Score) AS Score
 FROM Matches m
 JOIN MatchTypes mt ON mt.MatchTypeId = m.MatchTypeId
@@ -93,12 +103,14 @@ JOIN Teams t2 ON t2.TeamId = m.Team2Id
 WHERE mt.MatchType = 'Final';
 
 -- 11. Prikaži sve vrste utakmica
+EXPLAIN ANALYZE
 SELECT mt.MatchType, COUNT(*) AS Total
 FROM Matches m
 JOIN MatchTypes mt ON mt.MatchTypeId = m.MatchTypeId
 GROUP BY mt.MatchType;
 
 -- 12. Prikaži sve utakmice odigrane na određeni datum
+EXPLAIN ANALYZE
 SELECT t1.Name AS Team1, t2.Name AS Team2, mt.MatchType, (m.Team1Score || ':' || m.Team2Score) AS Score
 FROM Matches m
 JOIN Teams t1 ON t1.TeamId = m.Team1Id
@@ -107,6 +119,7 @@ JOIN MatchTypes mt ON mt.MatchTypeId = m.MatchTypeId
 WHERE m.MatchDate = '2022-12-10';
 
 -- 13. Prikaži igrače koji su postigli najviše golova na određenom turniru
+EXPLAIN ANALYZE
 SELECT (p.FirstName || ' ' || p.LastName) AS Name, COUNT(*) AS Goals
 FROM Events e
 JOIN Players p ON p.PlayerId = e.PlayerId
@@ -127,23 +140,16 @@ HAVING COUNT(*) = (
 )
 ORDER BY Name;
 
-
-SELECT te.Name AS Team, (p.FirstName || ' ' || p.LastName) AS Name, COUNT(*) AS Goals
-FROM Events e
-JOIN Players p ON p.PlayerId = e.PlayerId
-JOIN Teams te ON te.TeamId = p.TeamId
-WHERE e.Type = 'Goal'
-GROUP BY te.TeamId, te.Name, p.PlayerId, p.FirstName, p.LastName
-ORDER BY te.TeamId, COUNT(*) DESC;
-
 -- 14. Prikaži sve turnire na kojima je određeni tim sudjelovao
-SELECT t.Name, t.Year, s.Points
+EXPLAIN ANALYZE
+SELECT t.Name, t.Year, s.Points, s.GoalDifference
 FROM Standings s
 JOIN Tournaments t ON t.TournamentId = s.TournamentId
 WHERE s.TeamId = 5;
 
 -- 15. Pronađi pobjednika turnira na temelju odigranih utakmica
-SELECT t.Name
+EXPLAIN ANALYZE
+SELECT t.Name AS Winner, (m.Team1Score || ':' || m.Team2Score) AS Score
 FROM Matches m
 JOIN MatchTypes mt ON mt.MatchTypeId = m.MatchTypeId
 JOIN Teams t ON
@@ -153,6 +159,7 @@ WHERE mt.MatchType = 'Final'
   AND m.TournamentId = 1;
 
 -- 16. Za svaki turnir ispiši broj timova i igrača
+EXPLAIN ANALYZE
 SELECT t.Name,
        COUNT(DISTINCT s.TeamId) AS Teams,
        COUNT(p.PlayerId) AS Players
@@ -162,6 +169,7 @@ JOIN Players p ON p.TeamId = s.TeamId
 GROUP BY t.Name;
 
 -- 17. Najbolji strijelci po timu
+EXPLAIN ANALYZE
 SELECT Team, Name, Goals
 FROM (
     SELECT DISTINCT ON (te.TeamId)
@@ -178,6 +186,7 @@ FROM (
 ORDER BY Goals DESC;
 
 -- 18. Utakmice nekog suca
+EXPLAIN ANALYZE
 SELECT m.MatchDate, m.MatchTime, t1.Name AS Team1, t2.Name AS Team2, (Team1Score || ':' || Team2Score) AS Score
 FROM Matches m
 JOIN Teams t1 ON t1.TeamId = m.Team1Id

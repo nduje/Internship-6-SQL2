@@ -1,0 +1,17 @@
+CREATE INDEX Standings_Tournament ON Standings(TournamentId);
+CREATE INDEX Players_PlayerId ON Players(PlayerId);
+CREATE INDEX Players_Team ON Players(TeamId);
+CREATE INDEX Matches_Tournament ON Matches(TournamentId);
+CREATE INDEX Matches_Team1 ON Matches(Team1Id);
+CREATE INDEX Matches_Team2 ON Matches(Team2Id);
+CREATE INDEX MatchTypes_Id ON MatchTypes(MatchTypeId);
+CREATE INDEX Matches_Team1_Team2 ON Matches(Team1Id, Team2Id);
+CREATE INDEX Events_MatchId ON Events(MatchId);
+CREATE INDEX Events_PlayerId ON Events(PlayerId);
+CREATE INDEX Matches_TournamentId ON Matches(TournamentId);
+CREATE INDEX Players_TeamId ON Players(TeamId);
+CREATE INDEX Standings_TournamentId_TeamId ON Standings(TournamentId, TeamId);
+CREATE INDEX MatchTypes_MatchType ON MatchTypes(MatchType);
+CREATE INDEX Matches_MatchDate ON Matches(MatchDate);
+CREATE INDEX Standings_TeamId ON Standings(TeamId);
+CREATE INDEX Matches_RefereeId ON Matches(RefereeId);
