@@ -37,3 +37,7 @@ The project contains an ERD diagram that visually displays all database entities
    9. seed events
 8. fixes
 9. queries
+
+## Documentation
+
+See detailed performance analysis in the [document](docs/README.md).
