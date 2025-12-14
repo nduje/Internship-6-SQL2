@@ -16,3 +16,14 @@ The database includes entities such as Tournament, Team, Player, Referee, Match,
 
 The project contains an ERD diagram that visually displays all database entities, their attributes, and the relationships between them.  
 ![ERD Diagram](./erd.png)
+
+## Database Setup Order
+
+1. enums
+2. tables
+3. constraints
+4. functions
+5. triggers
+6. indexes
+7. seeds
+8. queries

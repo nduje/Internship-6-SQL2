@@ -34,6 +34,10 @@ ALTER TABLE Matches
 ADD CONSTRAINT FK_Match_Referee
 FOREIGN KEY (RefereeId) REFERENCES Referees(RefereeId);
 
+ALTER TABLE Matches
+ADD CONSTRAINT FK_Match_MatchType
+FOREIGN KEY (MatchTypeId) REFERENCES MatchTypes(MatchTypeId);
+
 ALTER TABLE Events
 ADD CONSTRAINT FK_Event_Match
 FOREIGN KEY (MatchId) REFERENCES Matches(MatchId);
@@ -45,3 +49,11 @@ FOREIGN KEY (PlayerId) REFERENCES Players(PlayerId);
 ALTER TABLE Standings
 ADD CONSTRAINT UQ_Standing
 UNIQUE (TournamentId, TeamId);
+
+ALTER TABLE Matches
+ADD CONSTRAINT Different_Teams
+CHECK (Team1Id <> Team2Id);
+
+ALTER TABLE Events
+ADD CONSTRAINT Event_Minute
+CHECK (Minute BETWEEN 0 AND 120);
