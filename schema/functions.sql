@@ -38,25 +38,35 @@ RETURNS TRIGGER AS $$
 DECLARE
     Team1Points INT := 0;
     Team2Points INT := 0;
+	Team1GoalDifference INT;
+	Team2GoalDifference
 BEGIN
     IF NEW.Team1Score > NEW.Team2Score THEN
-        points_team1 := 3;
+        Team1Points := 3;
     ELSIF NEW.Team2Score > NEW.Team1Score THEN
-        points_team2 := 3;
+        Team2Points := 3;
     ELSE
-        points_team1 := 1;
-        points_team2 := 1;
+        Team2Points := 1;
+        Team2Points := 1;
     END IF;
 
-    INSERT INTO Standings (TournamentId, TeamId, Points)
-    VALUES (NEW.TournamentId, NEW.Team1Id, points_team1)
-    ON CONFLICT (TournamentId, TeamId)
-    DO UPDATE SET Points = Standings.Points + EXCLUDED.Points;
+	Team1GoalDifference := NEW.Team1Score - NEW.Team2Score;
+	Team2GoalDifference := NEW.Team2Score - NEW.Team1Score;
 
-    INSERT INTO Standings (TournamentId, TeamId, Points)
-    VALUES (NEW.TournamentId, NEW.Team2Id, points_team2)
+    INSERT INTO Standings (TournamentId, TeamId, Points, GoalDifference)
+    VALUES (NEW.TournamentId, NEW.Team1Id, Team1Points, Team1GoalDifference)
     ON CONFLICT (TournamentId, TeamId)
-    DO UPDATE SET Points = Standings.Points + EXCLUDED.Points;
+    DO UPDATE SET
+        Points = Standings.Points + EXCLUDED.Points,
+        GoalDifference = Standings.GoalDifference + EXCLUDED.GoalDifference;
+
+		
+    INSERT INTO Standings (TournamentId, TeamId, Points, GoalDifference)
+    VALUES (NEW.TournamentId, NEW.Team2Id, Team2Points, Team2GoalDifference)
+    ON CONFLICT (TournamentId, TeamId)
+    DO UPDATE SET
+        Points = Standings.Points + EXCLUDED.Points,
+        GoalDifference = Standings.GoalDifference + EXCLUDED.GoalDifference;
 
     RETURN NEW;
 END;

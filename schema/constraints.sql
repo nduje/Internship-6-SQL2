@@ -19,16 +19,14 @@ ADD CONSTRAINT FK_Standing_Team
 FOREIGN KEY (TeamId) REFERENCES Teams(TeamId);
 
 ALTER TABLE Matches
-ADD CONSTRAINT FK_Match_Tournament
-FOREIGN KEY (TournamentId) REFERENCES Tournaments(TournamentId);
+ADD CONSTRAINT FK_Match_Team1_In_Tournament
+FOREIGN KEY (TournamentId, Team1Id)
+REFERENCES Standings(TournamentId, TeamId);
 
 ALTER TABLE Matches
-ADD CONSTRAINT FK_Match_Team1
-FOREIGN KEY (Team1Id) REFERENCES Teams(TeamId);
-
-ALTER TABLE Matches
-ADD CONSTRAINT FK_Match_Team2
-FOREIGN KEY (Team2Id) REFERENCES Teams(TeamId);
+ADD CONSTRAINT FK_Match_Team2_In_Tournament
+FOREIGN KEY (TournamentId, Team2Id)
+REFERENCES Standings(TournamentId, TeamId);
 
 ALTER TABLE Matches
 ADD CONSTRAINT FK_Match_Referee
