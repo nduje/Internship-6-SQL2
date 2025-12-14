@@ -24,7 +24,8 @@ FROM Matches m
 JOIN Teams t1 ON t1.TeamId = m.Team1Id
 JOIN Teams t2 ON t2.TeamId = m.Team2Id
 JOIN MatchTypes mt ON mt.MatchTypeId = m.MatchTypeId
-WHERE m.TournamentId = 1;
+WHERE m.TournamentId = 1
+ORDER BY m.MatchDate;
 
 -- 5. Prikaži sve utakmice određenog tima kroz sve turnire
 SELECT
@@ -40,7 +41,8 @@ JOIN MatchTypes mt ON mt.MatchTypeId = m.MatchTypeId
 JOIN Tournaments t ON t.TournamentId = m.TournamentId
 JOIN Teams t1 ON t1.TeamId = m.Team1Id
 JOIN Teams t2 ON t2.TeamId = m.Team2Id
-WHERE 1 IN (m.Team1Id, m.Team2Id);
+WHERE 1 IN (m.Team1Id, m.Team2Id)
+ORDER BY m.MatchDate;
 
 -- 6. Izlistati sve događaje (golovi, kartoni) za određenu utakmicu
 SELECT e.Type, e.Minute, (p.FirstName || ' ' || p.LastName) AS Name
@@ -50,17 +52,21 @@ WHERE e.MatchId = 1
 ORDER BY Minute;
 
 -- 7. Prikaži sve igrače koji su dobili žuti ili crveni karton na cijelom turniru
-SELECT (p.FirstName || ' ' || p.LastName) AS Name, e.Type, e.Minute, te.Name AS Team
+SELECT
+    (p.FirstName || ' ' || p.LastName) AS Name,
+    te.Name AS Team,
+    COUNT(*) AS Cards
 FROM Events e
 JOIN Players p ON p.PlayerId = e.PlayerId
 JOIN Teams te ON te.TeamId = p.TeamId
 JOIN Matches m ON m.MatchId = e.MatchId
-WHERE e.Type IN ('Yellow', 'Red')
-  AND m.MatchId = 1
-ORDER BY Minute;
+JOIN Tournaments t ON t.TournamentId = m.TournamentId
+WHERE e.Type IN ('Yellow', 'Red') AND t.TournamentId = 1
+GROUP BY p.PlayerId, p.FirstName, p.LastName, te.TeamId, te.Name
+ORDER BY Cards DESC;
 
 -- 8. Prikaži sve strijelce turnira
-SELECT (p.FirstName || ' ' || p.LastName) AS Name, COUNT(*) AS Goals, te.Name
+SELECT (p.FirstName || ' ' || p.LastName) AS Name,  te.Name AS Team, COUNT(*) AS Goals
 FROM Events e
 JOIN Players p ON p.PlayerId = e.PlayerId
 JOIN Teams te ON te.TeamId = p.TeamId
