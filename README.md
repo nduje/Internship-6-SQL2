@@ -26,12 +26,12 @@ The project contains an ERD diagram that visually displays all database entities
 5. triggers
 6. indexes
 7. seeds
-   7.1 seed tournaments
-   7.2 seed teams
-   7.3 seed players
-   7.4 seed referees
-   7.5 seed standings
-   7.6 seed match_types
-   7.7 seed matches
-   7.8 seed events
+   - 7.1 seed tournaments
+   - 7.2 seed teams
+   - 7.3 seed players
+   - 7.4 seed referees
+   - 7.5 seed standings
+   - 7.6 seed match_types
+   - 7.7 seed matches
+   - 7.8 seed events
 8. queries
