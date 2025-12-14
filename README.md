@@ -36,7 +36,8 @@ The project contains an ERD diagram that visually displays all database entities
    8. seed matches
    9. seed events
 8. fixes
-9. queries
+9. indexes
+10. queries
 
 ## Documentation
 
